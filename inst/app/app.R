@@ -5,6 +5,7 @@ suppressPackageStartupMessages(library(GetoptLong))
 suppressPackageStartupMessages(library(DiagrammeR))
 suppressPackageStartupMessages(library(igraph))
 suppressPackageStartupMessages(library(shinyjs))
+suppressPackageStartupMessages(library(bsub))
 
 STATUS_COL = bsub:::STATUS_COL
 
@@ -93,7 +94,7 @@ server <- function(input, output, session) {
         job_tb2$RUNTIMELIMIT = job_tb2$RUNTIMELIMIT*60
         job_tb2$MAX_MEM = bsub:::convert_to_byte(job_tb2$MAX_MEM)
         job_tb2$MEM = bsub:::convert_to_byte(job_tb2$MEM)
-        job_tb2$REQ_MEM = job_tb2$REQ_MEM*1024*1024
+        job_tb2$REQ_MEM = job_tb2$REQ_MEM*1024*1024*1024
 
         l = nchar(job_tb2$JOB_NAME) > 50
         if(any(l)) {
@@ -151,7 +152,7 @@ table.on( 'draw', function () {
 	    
 	    job_tb = job_summary_table()
 	    tb = table(job_tb$STAT)
-	    txt = paste0(qq("User <b>@{bsub_opt$user}</b> has "), paste(qq("<span class='@{names(tb)}'>@{tb} @{names(tb)} job@{ifelse(tb == 1, '', 's')}</span>", collapse = FALSE), collapse = ", "), qq(" within one week. Summary table was generated at @{format(Sys.time())}."))
+	    txt = paste0(qq("User <b>@{bsub_opt$user}</b> has "), paste(qq("<span class='@{names(tb)}' onclick='list_by_status(\"@{names(tb)}\");false;' style='cursor:pointer;'>@{tb} @{names(tb)} job@{ifelse(tb == 1, '', 's')}</span>", collapse = FALSE), collapse = ", "), qq(" within one week. Summary table was generated at @{format(Sys.time())}."))
 	    txt = paste0(txt, " ", as.character(actionLink("job_stats", "See job stats")))
         HTML(txt)
     })
@@ -276,7 +277,7 @@ table.on( 'draw', function () {
         output$dependency_plot = renderGrViz({
             showNotification("Generating job dependency tree...", duration = 5)
             message(qq("[@{format(Sys.time())}] Generating job dependency tree '@{job_id} <@{job_name}> @{job_status}'"))
-            dot = job_dependency_dot(job_id, job_tb)
+            dot = job_dependency_dot(job_id, job_tb, use_label = TRUE)
             grViz(dot, width = 868, height = 600)
         })
         

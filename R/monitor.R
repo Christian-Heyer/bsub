@@ -4,7 +4,7 @@
 #'
 #' @details
 #' The monitor is implemented as a shiny app.
-#'
+#' @export
 #' @examples
 #' \dontrun{
 #' monitor()
@@ -63,7 +63,7 @@ bjobs_barplot = function(status = c("RUN", "EXIT", "PEND", "DONE"), filter = NUL
     job_tb$STAT = as.character(job_tb$STAT)
     job_tb$STAT[!job_tb$STAT %in% status] = "Others"
     job_tb$STAT = factor(job_tb$STAT, levels = intersect(c(status, "Others"), as.character(job_tb$STAT)))
-    job_tb = job_tb[as.double(Sys.time() - job_tb$SUBMIT_TIME, units = "secs") >= 7*24*60*60, , drop = FALSE]
+    job_tb = job_tb[as.double(Sys.time() - job_tb$SUBMIT_TIME, units = "secs") <= 7*24*60*60, , drop = FALSE]
 
     if(nrow(job_tb) == 0) {
         plot(NULL, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE, ann = FALSE)

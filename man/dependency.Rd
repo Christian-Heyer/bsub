@@ -11,14 +11,24 @@ job_dependency_all(job_tb = NULL)
 
 job_dependency_igraph(job_id, job_tb = NULL)
 
-job_dependency_dot(job_id, job_tb = NULL)
+job_dependency_dot(job_id, job_tb = NULL, use_label = FALSE, label_width = 20)
 
-job_dependency_diagram(job_id, job_tb = NULL, ...)
+job_dependency_diagram(
+  job_id,
+  job_tb = NULL,
+  use_label = FALSE,
+  label_width = 20,
+  ...
+)
 }
 \arguments{
 \item{job_tb}{A data frame from \code{\link[=bjobs]{bjobs()}}. Internally used.}
 
 \item{job_id}{A single job ID.}
+
+\item{use_label}{Whether to use job names on the diagram?}
+
+\item{label_width}{Max number of characters for wrapping the label into lines.}
 
 \item{...}{Pass to \code{\link[DiagrammeR:grViz]{DiagrammeR::grViz()}}, such as the size of the html widget.}
 }

@@ -22,6 +22,7 @@
 #' @returns A data frame with selected job summaries.
 #' @rdname bjobs
 #' @importFrom utils read.csv
+#' @export
 #' @examples
 #' \dontrun{
 #' bjobs # this is the same as bjobs()
@@ -146,6 +147,7 @@ class(bjobs) = "bjobs"
 #' @details
 #' `bjobs_raw()` returns the table from the original `bsubs -a -o '...'` call.
 #' @rdname bjobs
+#' @export
 bjobs_raw = function(fields = "jobid stat job_name queue") {
 
     if(length(fields) == 1) {

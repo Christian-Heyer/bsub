@@ -73,7 +73,7 @@ job_rerun = function(job_id, dependency = character(0), verbose = TRUE, job_tb =
     	sh_file = tempfile(fileext = ".sh")
     
 	    con = file(sh_file, "w")
-	    writeLines(ev, con)
+	    writeLines(paste0("export ", ev), con)
 	    writeLines("\n", con)
 	    writeLines(script, con)
 	    close(con)
@@ -93,7 +93,7 @@ job_rerun = function(job_id, dependency = character(0), verbose = TRUE, job_tb =
     	# upload to submission node
     	local_sh_file = tempfile(paste0(name_uid, "_"), tmpdir = tempdir(), fileext = ".sh")
     	con = file(local_sh_file, "w")
-	    writeLines(ev, con)
+	    writeLines(paste0("export ", ev), con)
 	    writeLines("\n", con)
 	    writeLines(script, con)
 	    close(con)
@@ -131,6 +131,12 @@ job_env = function(job_id) {
 	ev = ev[!grepl(" ", ev)]
 	ev = ev[!grepl("R_BSUB_NAME_UID", ev)]
 	ev = ev[!grepl("R_BSUB_TEMP_DIR", ev)]
+	ev = ev[!grepl("LS_COLORS", ev)]
+
+	l = grepl(";", ev)
+	if(any(l)) {
+		ev[l] = gsub("^(\\S+)=(.*)$", "\\1=\"\\2\"", ev[l])
+	}
 
 	env_var_name = gsub("^(\\S+)=.*$", "\\1", ev)
 	names(ev) = env_var_name

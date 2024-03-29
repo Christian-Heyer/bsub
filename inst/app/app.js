@@ -116,7 +116,7 @@ gviz_add_events = function() {
     };
 
 	nodes.on("click", function(e) {
-		var job_id = $(this).find("text").text();
+		var job_id = $(this).find("text").text().replace(/^.*\((\d+)\)$/, "$1");
 		Shiny.onInputChange('select_job', 0);
         Shiny.onInputChange('select_job', job_id);
 	}).css(styles);
@@ -149,6 +149,20 @@ $(function() {
 		Shiny.onInputChange('kill_job_id', kill_job_id);
 	})
 });
+
+
+list_by_status = function(status) {
+	Shiny.onInputChange('status_select', status);
+	$("#status_select div label input[name='status_select']").each(function() {
+	    if($(this).attr("value") == status) {
+	    	$(this).prop( "checked", true );
+	    } else {
+	    	$(this).prop( "checked", false );
+	    }
+	})
+    
+   	return false;
+}
 
 // count_down = function(id) {
 // 	var countDownDate = new Date().getTime() + 5*60*1000;

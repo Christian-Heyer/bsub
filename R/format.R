@@ -3,6 +3,7 @@
 ### format in JS ### 
 
 #' @importFrom utils getFromNamespace
+#' @export
 formatFileSize = function(table, columns) {
 	getFromNamespace("formatColumns", ns = "DT")(table, columns, tplFileSize)
 }
@@ -34,7 +35,7 @@ tplNumber = function(...) {
 ### format in terminal table ###
 
 convert_to_byte = function(x) {
-    num = as.numeric(gsub("\\D", "", x))
+    suppressWarnings(num <- as.numeric(gsub("^.*(\\d+)(\\.\\d+).*$", "\\1\\2", x)))
     v = ifelse(grepl("K", x), num*1024, ifelse(grepl("M", x), num*1024^2, ifelse(grepl("G", x), num*1024^3, x)))
     suppressWarnings(as.numeric(v))
 }

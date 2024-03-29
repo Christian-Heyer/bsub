@@ -5,6 +5,7 @@
 #' 
 #' @details
 #' It sets the submission nodes, user name and how to call `Rscript`.
+#' @export
 config_bsub = function(verbose = TRUE) {
 	submission_node = readline(prompt = "What is the name of your submission node? ")
 	user = readline(prompt = qq("What is your user name on @{submission_node}? "))
@@ -111,7 +112,8 @@ config_sanger = function(user = NULL, ssh_key = "~/.ssh/id_rsa", verbose = TRUE)
 		"source /etc/profile",
 		qq("alias bjobs=\"ssh -i @{ssh_key} @{bsub_opt$user}@farm3-head3 '@{ssh_envir};bjobs'\""),
 		qq("alias bparam=\"ssh -i @{ssh_key} @{bsub_opt$user}@farm3-head3 '@{ssh_envir};bparam'\""),
-		qq("alias bkill=\"ssh -i @{ssh_key} @{bsub_opt$user}@farm3-head3 '@{ssh_envir};bkill'\"")
+		qq("alias bkill=\"ssh -i @{ssh_key} @{bsub_opt$user}@farm3-head3 '@{ssh_envir};bkill'\""),
+		qq("alias bsub=\"ssh -i @{ssh_key} @{bsub_opt$user}@farm3-head3 '@{ssh_envir};bsub'\"")
 	)
 
 	ssh_disconnect()

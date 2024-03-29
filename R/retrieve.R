@@ -9,7 +9,7 @@
 #' It retrieves the saved variable in [`bsub_chunk()`] when `save_rds = TRUE` is set.
 #'
 #' @returns The retrieved object.
-#'
+#' @export
 #' @examples
 #' \dontrun{
 #' job_id = bsub_chunk(name = "example", save_var = TRUE,

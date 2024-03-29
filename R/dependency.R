@@ -87,10 +87,12 @@ job_dependency_igraph = function(job_id, job_tb = NULL) {
     g
 }
 
+#' @param use_label Whether to use job names on the diagram?
+#' @param label_width Max number of characters for wrapping the label into lines.
 #' @rdname dependency
 #' @importFrom grDevices col2rgb rgb
 #' @export
-job_dependency_dot = function(job_id, job_tb = NULL) {
+job_dependency_dot = function(job_id, job_tb = NULL, use_label = FALSE, label_width = 15) {
         
     job_id = as.character(job_id)
     g = job_dependency_igraph(job_id, job_tb)
@@ -102,10 +104,24 @@ job_dependency_dot = function(job_id, job_tb = NULL) {
     fontcolor = "black"
     penwidth = rep(1, length(color))
     penwidth[V(g)$name == job_id] = 3
-    nodes = paste0(
-        qq("  node [fontname=Helvetical]\n"),
-        qq("  \"@{V(g)$name}\" [color=\"@{color}\", fillcolor=\"@{color}40\", style=filled, penwidth=@{penwidth}, fontsize=@{fontsize}, fontcolor=\"@{fontcolor}\", tooltip=\"@{V(g)$label}\"];\n", collapse = TRUE)
-    )
+
+    if(use_label) {
+        label = V(g)$label
+        label = gsub("_", " ", label)
+        label = sapply(label, function(x) {
+            paste(strwrap(x, width = label_width), collapse = "\\n")
+        })
+        label = paste0(label, "\\n", "(", V(g)$name, ")")
+        nodes = paste0(
+            qq("  node [fontname=Helvetical]\n"),
+            qq("  \"@{V(g)$name}\" [shape=box, color=\"@{color}\", fillcolor=\"@{color}40\", style=filled, penwidth=@{penwidth}, fontsize=@{fontsize}, fontcolor=\"@{fontcolor}\", label=\"@{label}\", fontname=\"Arial\", tooltip=\"@{V(g)$name}\"];\n", collapse = TRUE)
+        )
+    } else {
+        nodes = paste0(
+            qq("  node [fontname=Helvetical]\n"),
+            qq("  \"@{V(g)$name}\" [color=\"@{color}\", fillcolor=\"@{color}40\", style=filled, penwidth=@{penwidth}, fontsize=@{fontsize}, fontcolor=\"@{fontcolor}\", fontname=\"Arial\", tooltip=\"@{V(g)$label}\"];\n", collapse = TRUE)
+        )
+    }
 
     edgelist = get.edgelist(g)
     if(nrow(edgelist)) {
@@ -132,9 +148,9 @@ job_dependency_dot = function(job_id, job_tb = NULL) {
 
 #' @rdname dependency
 #' @export
-job_dependency_diagram = function(job_id, job_tb = NULL, ...) {
+job_dependency_diagram = function(job_id, job_tb = NULL, use_label = FALSE, label_width = 15, ...) {
 
     job_id = as.character(job_id)
-    dot = job_dependency_dot(job_id, job_tb)
+    dot = job_dependency_dot(job_id, job_tb = job_tb, use_label = use_label, label_width = label_width)
     DiagrammeR::grViz(dot, ...)
 }
