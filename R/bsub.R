@@ -532,8 +532,6 @@ bsub_cmd = function(cmd,
         sh_head = sh_head)
 }
 
-#' @importFrom crayon silver
-#' @export
 bsub_submit = function(command,
     hours,
     memory,

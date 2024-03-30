@@ -2,6 +2,10 @@
 
 ### format in JS ### 
 
+#' Format file size
+#' 
+#' @param table Internally used.
+#' @param columns Internally used.
 #' @importFrom utils getFromNamespace
 #' @export
 formatFileSize = function(table, columns) {

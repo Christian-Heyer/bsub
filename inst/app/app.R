@@ -28,7 +28,7 @@ ui = fluidPage(
     
     hr(style = "border-top: 1px solid black;"),
     checkboxGroupInput("status_select", label = "Select job status: ", choices = structure(names(STATUS_COL), names = names(STATUS_COL)), selected = names(STATUS_COL), inline = TRUE),
-    div(id = "table_loading", p("Summary table is loading...", style = "font-size:20px")),
+    div(id = "table_loading", class = "loader"),
     DT::dataTableOutput("mytable"),
     HTML('<p><button id="kill" type="button" class="btn btn-default">Kill selected jobs</button></p>'),
 

@@ -11,13 +11,13 @@ job_dependency_all(job_tb = NULL)
 
 job_dependency_igraph(job_id, job_tb = NULL)
 
-job_dependency_dot(job_id, job_tb = NULL, use_label = FALSE, label_width = 20)
+job_dependency_dot(job_id, job_tb = NULL, use_label = FALSE, label_width = 15)
 
 job_dependency_diagram(
   job_id,
   job_tb = NULL,
   use_label = FALSE,
-  label_width = 20,
+  label_width = 15,
   ...
 )
 }
