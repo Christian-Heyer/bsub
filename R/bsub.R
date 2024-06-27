@@ -32,6 +32,7 @@
 #'    can be retrieved by [`retrieve_var()`].
 #' @param sh_head Commands that are written as head of the sh script.
 #' @param ask Whether to promote.
+#' @param renv path to renv project directory to be used. 
 #' 
 #' @details
 #' `job_chunk()` submits R code chunk.
@@ -82,7 +83,8 @@ bsub_chunk = function(code,
     end = NULL,
     save_var = FALSE,
     sh_head = bsub_opt$sh_head,
-    ask = TRUE) {
+    ask = TRUE
+    renv = NULL) {
 
     if(!under_same_file_system()) {
         stop("Job can only be sumitted on the same file system as submission nodes.")
@@ -238,6 +240,11 @@ bsub_chunk = function(code,
 
     head = "############## temporary R script ##############"
     tail = ""
+
+    if(!is.null(renv)) {
+        head = c(head, qq("renv::activate('@{renv}')"))
+    }
+
     for(p in unique(packages)) {
         head = c(head, qq("library(@{p})"))
     }
