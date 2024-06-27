@@ -83,7 +83,7 @@ bsub_chunk = function(code,
     end = NULL,
     save_var = FALSE,
     sh_head = bsub_opt$sh_head,
-    ask = TRUE
+    ask = TRUE,
     renv = NULL) {
 
     if(!under_same_file_system()) {
